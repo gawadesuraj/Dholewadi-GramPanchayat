@@ -1,49 +1,57 @@
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import Navigation from './Navigation'
-import MobileMenu from './MobileMenu'
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import Navigation from "./Navigation";
+import MobileMenu from "./MobileMenu";
 
 function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const location = useLocation()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
-    setMobileMenuOpen(false)
-  }, [location.pathname])
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
     <>
       {/* Skip to content for accessibility */}
-      <a 
-        href="#main-content" 
+      <a
+        href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-lg z-50"
       >
         Skip to main content
       </a>
-      
+
       {/* Government Header */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-2">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-4">
               <span className="flex items-center">
-                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 Government of Maharashtra
               </span>
@@ -63,16 +71,21 @@ function Header() {
         </div>
       </div>
 
-      {/* Main Header - COMPLETELY REDESIGNED FOR DESKTOP VISIBILITY */}
-      <header className={`sticky top-0 z-40 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200' 
-          : 'bg-white shadow-md'
-      }`}>
+      {/* Main Header */}
+      <header
+        className={`sticky top-0 z-40 transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200"
+            : "bg-white shadow-md"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo Section */}
-            <Link to="/" className="flex items-center space-x-3 group flex-shrink-0">
+            <Link
+              to="/"
+              className="flex items-center space-x-3 group flex-shrink-0"
+            >
               <div className="relative">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
                   <span className="text-white font-bold text-lg">PS</span>
@@ -89,13 +102,13 @@ function Header() {
               </div>
             </Link>
 
-            {/* Desktop Navigation - FIXED WITH EXPLICIT DISPLAY */}
-            <div className="hidden lg:flex items-center justify-center flex-1 px-8">
+            {/* Desktop Navigation - Fades in and expands on medium screens */}
+            <div className="flex items-center justify-center flex-1 transition-all duration-300 ease-in-out overflow-hidden md:px-8 max-w-0 md:max-w-full opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto">
               <Navigation />
             </div>
 
-            {/* Desktop CTA Buttons */}
-            <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
+            {/* Desktop CTA Buttons - Fades in on medium screens */}
+            <div className="flex items-center space-x-3 flex-shrink-0 transition-opacity duration-300 ease-in-out opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto">
               <Link
                 to="/grievance"
                 className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-lg hover:scale-105"
@@ -110,32 +123,45 @@ function Header() {
               </Link>
             </div>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu button - Fades out on medium screens */}
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden relative p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary flex-shrink-0"
+              className="absolute right-4 top-1/2 -translate-y-1/2 md:opacity-0 md:pointer-events-none transition-opacity duration-300 ease-in-out p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary flex-shrink-0"
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
-                <span className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                  mobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'
-                }`}></span>
-                <span className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
-                  mobileMenuOpen ? 'opacity-0' : 'opacity-100'
-                }`}></span>
-                <span className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                  mobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'
-                }`}></span>
+                <span
+                  className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
+                    mobileMenuOpen
+                      ? "rotate-45 translate-y-1"
+                      : "-translate-y-0.5"
+                  }`}
+                ></span>
+                <span
+                  className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
+                    mobileMenuOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                ></span>
+                <span
+                  className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
+                    mobileMenuOpen
+                      ? "-rotate-45 -translate-y-1"
+                      : "translate-y-0.5"
+                  }`}
+                ></span>
               </div>
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        <MobileMenu
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+        />
       </header>
     </>
-  )
+  );
 }
 
-export default Header
+export default Header;
