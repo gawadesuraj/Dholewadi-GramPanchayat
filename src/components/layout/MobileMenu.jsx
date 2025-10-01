@@ -1,111 +1,105 @@
-import { Link, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+// FILE: src/components/MobileMenu.jsx
+import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { X } from "lucide-react"; // close icon
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: 'Home', path: '/', icon: '🏠' },
-  { label: 'About', path: '/about', icon: '📋' },
-  { label: 'Departments', path: '/departments', icon: '🏢' },
-  { label: 'Services', path: '/services', icon: '⚙️' },
-  { label: 'News', path: '/news', icon: '📰' },
-  { label: 'Events', path: '/events', icon: '📅' },
-  { label: 'RTI', path: '/rti', icon: '📄' },
-  { label: 'Officers', path: '/officers', icon: '👥' },
-  { label: 'Contact', path: '/contact', icon: '📞' },
-  { label: 'Grievance', path: '/grievance', icon: '📝' }
-]
+  { label: "nav.home", path: "/" },
+  { label: "nav.about", path: "/about" },
+  { label: "nav.departments", path: "/departments" },
+  { label: "nav.services", path: "/services" },
+  { label: "nav.news", path: "/news" },
+  { label: "nav.events", path: "/events" },
+  { label: "nav.rti", path: "/rti" },
+  { label: "nav.officers", path: "/officers" },
+  { label: "nav.contact", path: "/contact" },
+];
 
 function MobileMenu({ isOpen, onClose }) {
-  const location = useLocation()
-
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen])
-
-  if (!isOpen) return null
+  const location = useLocation();
+  const { t } = useTranslation();
 
   return (
-    <>
-      {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-black/50 z-50 lg:hidden"
-        onClick={onClose}
-      />
-      
-      {/* Slide-out Menu */}
-      <div className={`fixed top-0 left-0 h-full w-full max-w-sm bg-white z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        {/* Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-primary to-primary-dark">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">PS</span>
-            </div>
-            <div>
-              <h2 className="text-white font-semibold text-lg">Menu</h2>
-              <p className="text-white/80 text-sm">पंचायत समिती शिराळा</p>
-            </div>
-          </div>
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Overlay */}
+          <motion.div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
-            aria-label="Close menu"
-          >
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        
-        {/* Menu Items */}
-        <nav className="p-4 space-y-2 h-full overflow-y-auto pb-20">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={onClose}
-                className={`flex items-center space-x-4 px-4 py-4 rounded-xl font-medium transition-all duration-200 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg'
-                    : 'text-gray-700 hover:bg-gray-100 active:bg-gray-200'
-                }`}
-              >
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-lg">{item.label}</span>
-                {isActive && (
-                  <div className="ml-auto w-2 h-2 bg-yellow-400 rounded-full"></div>
-                )}
-              </Link>
-            )
-          })}
-        </nav>
+          />
 
-        {/* Menu Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-50 border-t">
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-2">Need Help?</p>
-            <a 
-              href="tel:(02345)272128" 
-              className="text-primary font-medium hover:underline"
-            >
-              (02345) 272128
-            </a>
-          </div>
-        </div>
-      </div>
-    </>
-  )
+          {/* Drawer */}
+          <motion.aside
+            className="fixed top-0 right-0 w-72 sm:w-80 h-full bg-white shadow-xl z-50 flex flex-col"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-800">
+                {t("aria.mainNavigation")}
+              </h2>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-md hover:bg-gray-100"
+              >
+                <X className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+
+            {/* Nav Items */}
+            <nav className="flex-1 overflow-y-auto p-5">
+              <ul className="space-y-1">
+                {navItems.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className={`block px-4 py-3 rounded-md text-base font-medium transition-all ${
+                          isActive
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                        onClick={onClose}
+                      >
+                        {t(item.label)}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
+            {/* CTA Buttons */}
+            <div className="border-t border-gray-200 p-5 space-y-3">
+              <Link
+                to="/grievance"
+                onClick={onClose}
+                className="block w-full text-center px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md shadow-sm"
+              >
+                {t("cta.grievance")}
+              </Link>
+              <Link
+                to="/services"
+                onClick={onClose}
+                className="block w-full text-center px-4 py-2.5 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-md shadow-sm"
+              >
+                {t("cta.services")}
+              </Link>
+            </div>
+          </motion.aside>
+        </>
+      )}
+    </AnimatePresence>
+  );
 }
 
-export default MobileMenu
+export default MobileMenu;

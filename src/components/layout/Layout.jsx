@@ -1,16 +1,27 @@
-import Header from './Header'
-import Footer from './Footer'
+// FILE: src/components/Layout.jsx
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Layout({ children }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Header */}
       <Header />
-      <main className="flex-1">
+
+      {/* Main Content Area */}
+      <main
+        id="main-content"
+        className="flex-1 bg-white"
+        role="main"
+        tabIndex={-1}
+      >
         {children}
       </main>
+
+      {/* Footer */}
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

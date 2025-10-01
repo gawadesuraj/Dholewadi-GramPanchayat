@@ -1,48 +1,58 @@
-/* eslint-disable no-unused-vars */
-import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+// FILE: src/components/Navigation.jsx
+import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const navItems = [
-  { label: 'Home', path: '/' },
-  { label: 'About', path: '/about' },
-  { label: 'Departments', path: '/departments' },
-  { label: 'Services', path: '/services' },
-  { label: 'News', path: '/news' },
-  { label: 'Events', path: '/events' },
-  { label: 'RTI', path: '/rti' },
-  { label: 'Officers', path: '/officers' },
-  { label: 'Contact', path: '/contact' }
-]
+  { label: "contact", path: "/contact" },
+  { label: "home", path: "/" },
+  { label: "about", path: "/about" },
+  { label: "departments", path: "/departments" },
+  { label: "services", path: "/services" },
+  { label: "news", path: "/news" },
+  { label: "events", path: "/events" },
+  { label: "rti", path: "/rti" },
+  { label: "officers", path: "/officers" },
+];
 
 function Navigation() {
-  const location = useLocation()
-  const [hoveredItem, setHoveredItem] = useState(null)
+  const location = useLocation();
+  const { t } = useTranslation();
 
   return (
-    <nav className="flex items-center space-x-2 bg-gray-50 rounded-full px-6 py-3 shadow-inner">
-      {navItems.map((item) => {
-        const isActive = location.pathname === item.path
-        return (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-              isActive
-                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg'
-                : 'text-gray-700 hover:text-primary hover:bg-white hover:shadow-md'
-            }`}
-            onMouseEnter={() => setHoveredItem(item.path)}
-            onMouseLeave={() => setHoveredItem(null)}
-          >
-            {item.label}
-            {isActive && (
-              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-            )}
-          </Link>
-        )
-      })}
+    <nav
+      className="hidden lg:flex items-center justify-center flex-1 mx-8"
+      aria-label={t("aria.mainNavigation")}
+    >
+      <ul className="flex items-center space-x-1">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                className={`relative block px-4 py-2 text-sm font-semibold transition-all duration-200 border-b-2 ${
+                  isActive
+                    ? "text-primary border-primary bg-primary/5"
+                    : "text-gray-700 border-transparent hover:text-primary hover:border-primary/50 hover:bg-gray-50"
+                }`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {t(item.label)}
+
+                {/* Active Indicator */}
+                {isActive && (
+                  <span
+                    className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"
+                    aria-hidden="true"
+                  ></span>
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
-  )
+  );
 }
 
-export default Navigation
+export default Navigation;

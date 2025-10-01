@@ -3,6 +3,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Layout from './components/layout/Layout'
 import Router from './router'
+import './i18n/i18n' // Initialize i18n
+// import "./styles/responsive.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
