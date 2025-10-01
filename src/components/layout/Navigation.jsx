@@ -20,7 +20,7 @@ function Navigation() {
 
   return (
     <nav
-      className="hidden lg:flex items-center space-x-0 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-500"
+      className="hidden lg:flex items-center space-x-8 overflow-x-auto whitespace-nowrap scrollbar-thin  scrollbar-thumb-gray-400 scrollbar-track-gray-100"
       aria-label={t("aria.mainNavigation")}
     >
       <ul className="flex items-center space-x-1">
