@@ -12,7 +12,7 @@ const CtaButtons = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
+    <div className="hidden lg:flex items-center space-x-3 flex-shrink-0 ">
       {/* Grievance */}
       <Link
         to="/grievance"
